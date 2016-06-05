@@ -1,5 +1,8 @@
 package ru.javawebinar.topjava.web;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -10,11 +13,16 @@ import java.io.IOException;
  * Created by Alex on 05.06.2016.
  */
 public class MealServlet extends HttpServlet {
+    private static final Logger LOG = LoggerFactory.getLogger(MealServlet.class);
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        LOG.debug("redirect to Meal List");
 
+        //request.getRequestDispatcher("/mealList.jsp").forward(request, response);
+        response.sendRedirect("mealList.jsp");
     }
 }
