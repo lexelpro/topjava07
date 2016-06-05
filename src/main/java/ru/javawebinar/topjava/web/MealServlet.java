@@ -35,7 +35,6 @@ public class MealServlet extends HttpServlet {
                 new UserMeal(LocalDateTime.of(2015, Month.MAY, 31, 13, 0), "Обед", 500),
                 new UserMeal(LocalDateTime.of(2015, Month.MAY, 31, 20, 0), "Ужин", 510)
         );
-
         response.setContentType("text/html;charset=UTF-8");
 
         request.setAttribute("mealList", mealList);

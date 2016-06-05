@@ -4,24 +4,25 @@
 <html>
 <head>
     <title>Meal list</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 </head>
 <body>
 <h2><a href="index.html">Home</a></h2>
 <h2>Meal list</h2>
-<table>
+<table class="table table-hover table-bordered">
 <thead>
-<th>
-<td>Время</td>
-<td>Описание</td>
-<td>Калории</td>
-</th>
+<tr>
+<th>Время</th>
+<th>Описание</th>
+<th>Калории</th>
+</tr>
 </thead>
 <tbody>
 <c:forEach var="meal" items="${mealList}">
 <tr>
-<td>${meal}</td>
-<td></td>
-<td></td>
+<td>${meal.getDateTime().toLocalDate()}</td>
+<td>${meal.getDescription()}</td>
+<td>${meal.getCalories()}</td>
 </tr>
 </c:forEach>
 
