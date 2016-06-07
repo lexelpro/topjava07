@@ -19,8 +19,8 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="meal" items="${mealList}">
-            <tr>
+        <c:forEach var="meal" items="${userMealWithExceeds}">
+            <tr style="color: <c:if test="${meal.exceed}">red</c:if> <c:if test="${!meal.exceed}">green</c:if>">
                 <td>${meal.getFormatDateTime()}</td>
                 <td>${meal.description}</td>
                 <td>${meal.calories}</td>
