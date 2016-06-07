@@ -9,24 +9,26 @@
 <body>
 <h2><a href="index.html">Home</a></h2>
 <h2>Meal list</h2>
-<table class="table table-hover table-bordered">
-<thead>
-<tr>
-<th>Время</th>
-<th>Описание</th>
-<th>Калории</th>
-</tr>
-</thead>
-<tbody>
-<c:forEach var="meal" items="${mealList}">
-<tr>
-<td>${meal.getDateTime().toLocalDate()}</td>
-<td>${meal.getDescription()}</td>
-<td>${meal.getCalories()}</td>
-</tr>
-</c:forEach>
+<div style="width: 500px;">
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>Время</th>
+            <th>Описание</th>
+            <th>Калории</th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach var="meal" items="${mealList}">
+            <tr>
+                <td>${meal.getFormatDateTime()}</td>
+                <td>${meal.description}</td>
+                <td>${meal.calories}</td>
+            </tr>
+        </c:forEach>
 
-</tbody>
-</table>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>
