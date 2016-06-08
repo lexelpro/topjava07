@@ -8,6 +8,9 @@ import java.time.format.DateTimeFormatter;
  * 11.01.2015.
  */
 public class UserMeal {
+
+    private long id;
+
     private final LocalDateTime dateTime;
 
     private final String description;
@@ -31,6 +34,10 @@ public class UserMeal {
 
     public int getCalories() {
         return calories;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getFormatDateTime() {

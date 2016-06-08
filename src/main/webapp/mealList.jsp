@@ -13,17 +13,22 @@
     <table class="table table-hover table-bordered">
         <thead>
         <tr>
+            <th>id</th>
             <th>Время</th>
             <th>Описание</th>
             <th>Калории</th>
+            <th colspan=2>Action</th>
         </tr>
         </thead>
         <tbody>
         <c:forEach var="meal" items="${userMealWithExceeds}">
             <tr style="color: <c:if test="${meal.exceed}">red</c:if> <c:if test="${!meal.exceed}">green</c:if>">
+                <td>${meal}</td>
                 <td>${meal.getFormatDateTime()}</td>
                 <td>${meal.description}</td>
                 <td>${meal.calories}</td>
+                <td>Edit</td>
+                <td>Delete</td>
             </tr>
         </c:forEach>
 
