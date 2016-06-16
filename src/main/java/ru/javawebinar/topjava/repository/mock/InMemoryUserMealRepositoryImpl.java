@@ -59,7 +59,7 @@ public class InMemoryUserMealRepositoryImpl implements UserMealRepository {
         if (repository.size() == 0)
             return null;
         return repository.entrySet().stream().
-                sorted(Map.Entry.comparingByValue((um2, um1) -> um1.getDateTime().compareTo(um2.getDateTime()))).
+                sorted(Map.Entry.comparingByValue((um1, um2) -> um1.getDateTime().compareTo(um2.getDateTime()))).
                 map( Map.Entry :: getValue).
                 collect(Collectors.toList());
     }
