@@ -2,6 +2,7 @@ package ru.javawebinar.topjava.repository.mock;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.repository.UserMealRepository;
@@ -22,6 +23,7 @@ import static ru.javawebinar.topjava.repository.mock.InMemoryUserRepositoryImpl.
  * GKislin
  * 15.09.2015.
  */
+@Repository
 public class InMemoryUserMealRepositoryImpl implements UserMealRepository {
 
     private static final Comparator<UserMeal> USER_MEAL_COMPARATOR = Comparator.comparing(UserMeal::getDateTime).reversed();
@@ -48,7 +50,6 @@ public class InMemoryUserMealRepositoryImpl implements UserMealRepository {
         } else if (get(mealId, userId) == null) {
             return null;
         }
-        //TODO спросить зачем нужна эта мапа ведь она находится внутри метода
         Map<Integer, UserMeal> userMeals = repository.computeIfAbsent(userId, ConcurrentHashMap::new);
         userMeals.put(mealId, userMeal);
         return userMeal;
