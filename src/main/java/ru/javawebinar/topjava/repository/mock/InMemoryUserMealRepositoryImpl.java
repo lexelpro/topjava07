@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.repository.UserMealRepository;
+import ru.javawebinar.topjava.util.TimeUtil;
 import ru.javawebinar.topjava.util.UserMealsUtil;
 
 import java.time.LocalDateTime;
@@ -78,6 +79,16 @@ public class InMemoryUserMealRepositoryImpl implements UserMealRepository {
                 sorted(Map.Entry.comparingByValue((um1, um2) -> um1.getDateTime().compareTo(um2.getDateTime()))).
                 map( Map.Entry :: getValue).
                 collect(Collectors.toList());*/
+    }
+
+    @Override
+    public Collection<UserMeal> getBetween(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
+        Objects.requireNonNull(startDateTime);
+        Objects.requireNonNull(endDateTime);
+
+        return getAll(userId).stream()
+                .filter(um -> TimeUtil.isBetween(um.getDateTime(), startDateTime, endDateTime))
+                .collect(Collectors.toList());
     }
 }
 
