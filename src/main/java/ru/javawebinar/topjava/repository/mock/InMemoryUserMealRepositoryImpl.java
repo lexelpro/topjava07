@@ -7,61 +7,77 @@ import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.repository.UserMealRepository;
 import ru.javawebinar.topjava.util.UserMealsUtil;
 
-import java.util.Collection;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+
+import static ru.javawebinar.topjava.repository.mock.InMemoryUserRepositoryImpl.ADMIN_ID;
+import static ru.javawebinar.topjava.repository.mock.InMemoryUserRepositoryImpl.USER_ID;
 
 /**
  * GKislin
  * 15.09.2015.
  */
 public class InMemoryUserMealRepositoryImpl implements UserMealRepository {
-    private static final Logger LOG = LoggerFactory.getLogger(InMemoryUserMealRepositoryImpl.class);
 
+    private static final Comparator<UserMeal> USER_MEAL_COMPARATOR = Comparator.comparing(UserMeal::getDateTime).reversed();
 
-    private Map<Integer, UserMeal> repository = new ConcurrentHashMap<>();
+    private Map<Integer, Map<Integer, UserMeal>> repository = new ConcurrentHashMap<>();
     private AtomicInteger counter = new AtomicInteger(0);
 
     {
-        UserMealsUtil.MEAL_LIST.forEach(this::save);
+        UserMealsUtil.MEAL_LIST.forEach(um -> save(um, USER_ID));
+        save(new UserMeal(LocalDateTime.of(2016, Month.JUNE, 1, 14, 0), "Админ ланч", 510), ADMIN_ID);
+        save(new UserMeal(LocalDateTime.of(2016, Month.JUNE, 1, 21, 0), "Админ ужин", 1500), ADMIN_ID);
+
     }
 
     @Override
-    public UserMeal save(UserMeal userMeal) {
-        LOG.info("Save " + userMeal );
+    public UserMeal save(UserMeal userMeal, int userId) {
+        Objects.requireNonNull(userMeal);
+
+        Integer mealId = userMeal.getId();
 
         if (userMeal.isNew()) {
-            userMeal.setId(counter.incrementAndGet());
+            mealId = counter.incrementAndGet();
+            userMeal.setId(mealId);
+        } else if (get(mealId, userId) == null) {
+            return null;
         }
-        repository.put(userMeal.getId(), userMeal);
+        //TODO спросить зачем нужна эта мапа ведь она находится внутри метода
+        Map<Integer, UserMeal> userMeals = repository.computeIfAbsent(userId, ConcurrentHashMap::new);
+        userMeals.put(mealId, userMeal);
         return userMeal;
     }
 
     @Override
-    public void delete(int id) {
-        LOG.info("delete " + id);
-        repository.remove(id);
+    public boolean delete(int id, int userId) {
+        Map<Integer, UserMeal> userMeals = repository.get(userId);
+        return userMeals != null && userMeals.remove(id) != null;
     }
 
     @Override
-    public UserMeal get(int id) {
-        LOG.info("get " + id);
-        if (repository.size() == 0)
-            return null;
-        return repository.get(id);
+    public UserMeal get(int id, int userId) {
+        Map<Integer, UserMeal> userMeals = repository.get(userId);
+        return userMeals == null ? null : userMeals.get(id);
     }
 
     @Override
-    public Collection<UserMeal> getAll() {
-        LOG.info("getAll");
+    public Collection<UserMeal> getAll(int userId) {
+        Map<Integer, UserMeal> userMeals = repository.get(userId);
+        return userMeals == null ? Collections.emptyList() :
+                userMeals.values().stream().sorted(USER_MEAL_COMPARATOR).collect(Collectors.toList());
+
+        /*
         if (repository.size() == 0)
             return null;
         return repository.entrySet().stream().
                 sorted(Map.Entry.comparingByValue((um1, um2) -> um1.getDateTime().compareTo(um2.getDateTime()))).
                 map( Map.Entry :: getValue).
-                collect(Collectors.toList());
+                collect(Collectors.toList());*/
     }
 }
 
