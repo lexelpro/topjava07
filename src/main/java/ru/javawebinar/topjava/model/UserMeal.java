@@ -10,15 +10,18 @@ import java.time.LocalDateTime;
  * 11.01.2015.
  */
 @NamedQueries({
-        @NamedQuery(name = UserMeal.DELETE, query = "DELETE FROM UserMeal um WHERE um.id=:id AND um.user.id=:userID"),
+        @NamedQuery(name = UserMeal.UPDATE, query = "UPDATE UserMeal um SET um.description=:description, um.calories=:calories, um.dateTime=:date_time " +
+                                                    " WHERE um.id=:id AND um.user.id=:user_id"),
+        @NamedQuery(name = UserMeal.DELETE, query = "DELETE FROM UserMeal um WHERE um.id=:id AND um.user.id=:userId"),
         @NamedQuery(name = UserMeal.ALL_SORTED, query = "SELECT um FROM UserMeal um WHERE um.user.id=:userId ORDER BY um.dateTime DESC"),
-        @NamedQuery(name = UserMeal.BETWEEN, query = "SELECT um FROM UserMeal um WHERE um.user.id=:userId AND um.dateTime BETWEEN ?1 AND ?2 AND ?3 ORDER BY um.dateTime DESC")
+        @NamedQuery(name = UserMeal.BETWEEN, query = "SELECT um FROM UserMeal um WHERE um.user.id=:userId AND um.dateTime BETWEEN ?1 AND ?2 ORDER BY um.dateTime DESC")
 })
 @Entity
 @Table(name = "meals", uniqueConstraints = {@UniqueConstraint(columnNames = "user_id", name = "MEALS_UNIQUE_USER_DATETIME_IDX"),
         @UniqueConstraint(columnNames = "date_time", name = "MEALS_UNIQUE_USER_DATETIME_IDX")})
 public class UserMeal extends BaseEntity {
 
+    public static final String UPDATE = "UserMeal.update";
     public static final String DELETE = "UserMeal.delete";
     public static final String ALL_SORTED = "UserMeal.getAllSorted";
     public static final String BETWEEN = "UserMeal.getBetween";

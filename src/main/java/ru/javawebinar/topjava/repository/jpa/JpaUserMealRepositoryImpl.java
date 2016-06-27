@@ -5,11 +5,9 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.repository.UserMealRepository;
-import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,6 +17,7 @@ import java.util.List;
  */
 
 @Repository
+@Transactional(readOnly = true)
 public class JpaUserMealRepositoryImpl implements UserMealRepository {
 
     @PersistenceContext
@@ -27,17 +26,20 @@ public class JpaUserMealRepositoryImpl implements UserMealRepository {
     @Override
     @Transactional
     public UserMeal save(UserMeal userMeal, int userId) {
-        if (AuthorizedUser.id() == userId) {
-            if (userMeal.isNew()) {
-                em.persist(userMeal);
-                return userMeal;
-            } else {
-                return em.merge(userMeal);
-            }
+             if (userMeal.isNew()) {
+            em.persist(userMeal);
+            return userMeal;
         } else {
-            //TODO check what should be here
-            return null;
+            if (em.createNamedQuery(UserMeal.UPDATE)
+                    .setParameter("id", userMeal.getId())
+                    .setParameter("description", userMeal.getDescription())
+                    .setParameter("calories", userMeal.getCalories())
+                    .setParameter("date_time", userMeal.getDateTime())
+                    .setParameter("user_id", userId)
+                    .executeUpdate() == 0)
+                return null;
         }
+        return userMeal;
     }
 
     @Override
@@ -64,16 +66,17 @@ public class JpaUserMealRepositoryImpl implements UserMealRepository {
 
     @Override
     public List<UserMeal> getAll(int userId) {
-        return em.createNamedQuery(UserMeal.ALL_SORTED, UserMeal.class).getResultList();
+        return em.createNamedQuery(UserMeal.ALL_SORTED, UserMeal.class).setParameter("userId", userId).getResultList();
     }
 
     @Override
     public List<UserMeal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
 
-        return em.createNamedQuery(UserMeal.BETWEEN, UserMeal.class)
+      /*  return null;*/
+       return em.createNamedQuery(UserMeal.BETWEEN, UserMeal.class)
                 .setParameter(1, startDate)
                 .setParameter(2, endDate)
-                .setParameter(3, userId)
+                .setParameter("userId", userId)
                 .getResultList();
     }
 }
