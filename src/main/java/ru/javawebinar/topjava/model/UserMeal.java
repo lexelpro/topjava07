@@ -1,8 +1,8 @@
 package ru.javawebinar.topjava.model;
 
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -28,7 +28,7 @@ public class UserMeal extends BaseEntity {
 
 
     @Column(name = "date_time", columnDefinition = "timestamp default now()", nullable = false)
-    @NotEmpty
+    @NotNull
     private LocalDateTime dateTime;
 
     @Column(name = "description", nullable = false)
