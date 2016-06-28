@@ -3,6 +3,7 @@ package ru.javawebinar.topjava.repository.jpa;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.AuthorizedUser;
+import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.repository.UserMealRepository;
 
@@ -30,12 +31,13 @@ public class JpaUserMealRepositoryImpl implements UserMealRepository {
             em.persist(userMeal);
             return userMeal;
         } else {
+                 User ref = em.getReference(User.class, userId);
+                 userMeal.setUser(ref);
             if (em.createNamedQuery(UserMeal.UPDATE)
                     .setParameter("id", userMeal.getId())
                     .setParameter("description", userMeal.getDescription())
                     .setParameter("calories", userMeal.getCalories())
                     .setParameter("date_time", userMeal.getDateTime())
-                    .setParameter("user_id", userId)
                     .executeUpdate() == 0)
                 return null;
         }
@@ -57,11 +59,11 @@ public class JpaUserMealRepositoryImpl implements UserMealRepository {
 
     @Override
     public UserMeal get(int id, int userId) {
-        if (AuthorizedUser.id() == userId) {
-            return em.find(UserMeal.class, id);
-        } else {
-            return null;
-        }
+        UserMeal userMeal = em.find(UserMeal.class, id);
+        User ref = em.getReference(User.class, userId);
+        userMeal.setUser(ref);
+        return userMeal;
+
     }
 
     @Override
