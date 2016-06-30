@@ -34,10 +34,11 @@ public class UserMeal extends BaseEntity {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "calories")
+    @Column(name = "calories", nullable = false)
     protected int calories;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     public UserMeal() {
