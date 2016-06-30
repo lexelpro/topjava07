@@ -1,6 +1,8 @@
 package ru.javawebinar.topjava.repository.mock;
 
+import org.junit.runner.RunWith;
 import org.springframework.stereotype.Repository;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.repository.UserMealRepository;
