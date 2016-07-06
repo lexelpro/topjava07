@@ -19,6 +19,7 @@ public interface ProxyUserMealRepository extends JpaRepository<UserMeal, Integer
     List<UserMeal> findAll(Sort sort);
 
     @Override
+    @Transactional
     UserMeal save(UserMeal entity);
 
     @Override
@@ -34,4 +35,11 @@ public interface ProxyUserMealRepository extends JpaRepository<UserMeal, Integer
     //@Query("SELECT m FROM UserMeal m "+
     //        "WHERE m.user.id=:userId AND m.dateTime BETWEEN :startDate AND :endDate ORDER BY m.dateTime DESC" )
     List<UserMeal> getBetween(@Param("startDate") LocalDateTime startDate, @Param("endDate")LocalDateTime endDate, @Param("userId") int userId);
+
+    @Query("SELECT um from UserMeal um where um.id=?1 and um.user.id=?2")
+    UserMeal getUserMeal(@Param("id") int id,@Param("userId") int userId);
+
+    @Query(name = UserMeal.ALL_SORTED)
+    //@Query("SELECT m FROM UserMeal m WHERE m.user.id=:userId ORDER BY m.dateTime DESC")
+    List<UserMeal> getUserMealAll(@Param("userId") int userId);
 }
