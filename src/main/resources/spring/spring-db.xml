@@ -11,13 +11,8 @@
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
        http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
-    <!---->
-    <context:component-scan base-package="ru.javawebinar.**.repository.jpa"/>
-
-    <jpa:repositories base-package="ru.javawebinar.**.repository.datajpa"/>
 
     <jdbc:initialize-database data-source="dataSource" enabled="${database.init}">
-        <!--suppress SpringModelInspection -->
         <jdbc:script location="classpath:db/${jdbc.initLocation}"/>
         <jdbc:script encoding="utf-8" location="classpath:db/populateDB.sql"/>
     </jdbc:initialize-database>
@@ -48,8 +43,7 @@
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
           p:entityManagerFactory-ref="entityManagerFactory"/>
 
-
-    <beans profile="hsqldb">
+     <beans profile="hsqldb">
         <context:property-placeholder location="classpath:db/hsqldb.properties" system-properties-mode="OVERRIDE"/>
 
         <!--no pooling-->
@@ -83,12 +77,10 @@
         </bean>
     </beans>
     <beans profile="jpa">
-
+        <context:component-scan base-package="ru.javawebinar.**.repository.jpa"/>
     </beans>
     <beans profile="datajpa">
         <context:component-scan base-package="ru.javawebinar.**.repository.datajpa"/>
-    </beans>
-    <beans profile="jpa, datajpa">
-
+        <jpa:repositories base-package="ru.javawebinar.**.repository.datajpa"/>
     </beans>
 </beans>
