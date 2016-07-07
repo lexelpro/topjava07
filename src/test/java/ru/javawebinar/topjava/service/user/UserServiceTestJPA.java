@@ -12,13 +12,7 @@ import ru.javawebinar.topjava.service.UserServiceTest;
 /**
  * Created by Alex on 06.07.2016.
  */
-@ContextConfiguration({
-        "classpath:spring/spring-app.xml",
-        "classpath:spring/spring-db.xml"
-})
-@RunWith(SpringJUnit4ClassRunner.class)
-@Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-//@ActiveProfiles(Profiles.ACTIVE_DB)
+
 @ActiveProfiles(profiles = {Profiles.ACTIVE_DB, Profiles.JPA})
 public class UserServiceTestJPA extends UserServiceTest {
 }
