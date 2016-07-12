@@ -30,6 +30,13 @@ public class RootController {
         return "userList";
     }
 
+    @RequestMapping(value = "/meals", method = RequestMethod.GET)
+    public String mealList(Model model) {
+        model.addAttribute("mealList", service.getAll());
+        return "mealList";
+    }
+
+
     @RequestMapping(value = "/users", method = RequestMethod.POST)
     public String setUser(HttpServletRequest request) {
         int userId = Integer.valueOf(request.getParameter("userId"));
