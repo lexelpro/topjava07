@@ -4,3 +4,4 @@ target
 *.iml
 log
 postgres.properties
+*.patch
