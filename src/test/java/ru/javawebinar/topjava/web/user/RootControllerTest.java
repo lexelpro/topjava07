@@ -39,13 +39,7 @@ public class RootControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("mealList"))
                 .andExpect(forwardedUrl("/WEB-INF/jsp/mealList.jsp"))
-                .andExpect(model().attribute("mealList", hasSize(6)))
-                .andExpect(model().attribute("mealList", hasItem(
-                        allOf(
-                                hasProperty("id",is(START_SEQ)),
-                                hasProperty("description", is(MEAL1_ID))
-                        )
-                )));
+                .andExpect(model().attribute("mealList", hasSize(6)));
 
     }
 }
