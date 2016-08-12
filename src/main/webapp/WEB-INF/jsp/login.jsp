@@ -82,7 +82,6 @@
         калорий за день норму (редактируемый параметр в профиле пользователя).
         Весь REST интерфейс покрывается JUnit тестами, используя Spring MVC Test и Spring Security Test.
     </div>
-    <div class="lead">Проект на <a href="https://github.com/lexelpro/topjava07">GitHub</a></div>
 </div>
 <jsp:include page="fragments/footer.jsp"/>
 </body>
