@@ -5,6 +5,3 @@ Java Enterprise project with registration / authorization and role-based interfa
 
 DEMO: <a href="http://mytopjava.herokuapp.com/">http://mytopjava.herokuapp.com/</a>
 
-Наиболее востребованные технологии /инструменты / фреймворки Java Enterprise:
-Maven/ Spring/ Security/ JPA(Hibernate)/ REST(Jackson)/ Bootstrap(CSS)/ jQuery + plugins.
-
